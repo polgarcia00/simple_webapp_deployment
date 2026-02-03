@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+
+
+apt update -y
+apt install -y nginx git
+
+rm -rf /var/www/html/*
+
+rm -rf /tmp/webapp
+git clone https://gitlab.com/sealy/simple-webapp.git /tmp/webapp
+
+cp -r /tmp/webapp/* /var/www/html/
+
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
+
+systemctl enable nginx
+systemctl restart nginx

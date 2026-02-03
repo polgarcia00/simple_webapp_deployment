@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o pipefail
+
+APP_USER="ubuntu"
+APP_DIR="/home/ubuntu/simple-webapp"
+
+apt update
+apt install -y nodejs npm git
+
+if [ ! -d "$APP_DIR" ]; then
+  sudo -u "$APP_USER" git clone https://gitlab.com/sealy/simple-webapp.git "$APP_DIR"
+fi
+
+cd "$APP_DIR"
+
+sudo -u "$APP_USER" npm install
+sudo -u "$APP_USER" npm run start
